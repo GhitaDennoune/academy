@@ -57,7 +57,7 @@ class ClassController extends Controller
         return Inertia::render('classes/index', [
             "items" => array_values($info),
             "coaches" => $coaches,
-            "suAdmin" => true
+            "suAdmin" => $val 
         ]);
     }
 

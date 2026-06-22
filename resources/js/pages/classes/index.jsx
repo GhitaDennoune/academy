@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import Cards from './components/cards';
 import Filter from './components/filter';
+import AppLayout from '@/layouts/app-layout';
+import Banner from '@/components/ui/banner';
+import { Head, router, useForm } from '@inertiajs/react';
 
 const Classes = ({ items, coaches, suAdmin }) => {
     const [field, setField] = useState('all');
@@ -37,6 +40,23 @@ const Classes = ({ items, coaches, suAdmin }) => {
 
     return (
         <>
+         <AppLayout
+            breadcrumbs={[
+                {
+                    title: 'Courses',
+                    // href: Classes(),
+                },
+            ]}
+        >
+            <Head title="Courses" />
+
+
+                <Banner
+                    // illustration={illustration}
+                    size={400}
+                    title="Classes"
+                    description="A Place To Show All CLasses "
+                />
             <Filter
                 onPromoChange={setPromo}
                 onFieldChange={setField}
@@ -59,6 +79,8 @@ const Classes = ({ items, coaches, suAdmin }) => {
                     );
                 })}
             </div>
+                    </AppLayout>
+
         </>
     );
 };
