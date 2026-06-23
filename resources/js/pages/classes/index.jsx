@@ -13,17 +13,19 @@ const Classes = ({ items, coaches, suAdmin }) => {
 
     const promos = [0, 1, 2, 3, 4, 5];
     const specialty = ['all', 'coding', 'media'];
-    const [promo, setPromo] = useState(0);
+    const [promo, setPromo] = useState('all');
     const [coach, setCoach] = useState("all");
 
     useEffect(() => {
-        let filtered = items;
+        let filtered = items ?? [];
 
-        if (promo !== 0) {
-            filtered = filtered.filter((c) => c.promo === promo);
+        if (promo !== 'all') {
+            filtered = filtered.filter((c) => String(c.promo) === String(promo));
         }
         if (field !== "all") {
-            filtered = filtered.filter((c) => c.type === field);
+            filtered = filtered.filter(
+                (c) => String(c.type ?? '').trim().toLowerCase() === field,
+            );
         }
         if (coach !== "all") {
             filtered = filtered.filter((c) => c.coach === coach);
@@ -60,7 +62,7 @@ const Classes = ({ items, coaches, suAdmin }) => {
                     {data.map((e) => {
                         return (
                             <Cards
-                                key={e.class}
+                                key={e.id}
                                 classNum={e.class}
                                 formation={e.type ? e.type : 'class'}
                                 promo={e.promo ? e.promo : '?'}
