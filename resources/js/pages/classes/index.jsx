@@ -1,70 +1,87 @@
-import { Head } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import Banner from '@/components/ui/banner';
-import { TransText } from '@/components/TransText';
-import AppLayout from '@/layouts/app-layout';
-import illustration from '../../../../public/assets/images/banner/Lesson-bro.png';
 import Cards from './components/cards';
 import Filter from './components/filter';
+import AppLayout from '@/layouts/app-layout';
+import Banner from '@/components/ui/banner';
+import { Head, router, useForm } from '@inertiajs/react';
 
-const Classes = ({ items, coaches }) => {
+const Classes = ({ items, coaches, suAdmin }) => {
     const [field, setField] = useState('all');
     const [data, setData] = useState(items);
-
+    
     const promos = [0, 1, 2, 3, 4, 5];
     const specialty = ['all', 'coding', 'media'];
     const [promo, setPromo] = useState(0);
     const [coach, setCoach] = useState("all");
-
+    console.log(suAdmin);
+    console.log(coaches);
+    console.log(field);
+    var filtered = items
+    console.log();
+    
     useEffect(() => {
-        let filtered = items;
+        if (promo === 0) {
+            // console.log('hi');
 
-        if (promo !== 0) {
+            filtered = items;
+        } else {
             filtered = filtered.filter((c) => c.promo === promo);
         }
-        if(field !== "all") {
+        if(field !== "all")
+        {
             filtered = filtered.filter((c) => c.type === field);
         }
-        if(coach !== "all") {
+        if(coach !== "all")
+        {
             filtered = filtered.filter((c) => c.coach === coach);
         }
-        setData(filtered);
-    }, [promo, field, coach, items]);
+        setData(filtered );
+    }, [promo,field,coach]);
 
     return (
-        <AppLayout>
-            <Head title="Classes" />
-            <div className="min-h-screen p-4 md:p-6">
+        <>
+         <AppLayout
+            breadcrumbs={[
+                {
+                    title: 'Courses',
+                    // href: Classes(),
+                },
+            ]}
+        >
+            <Head title="Courses" />
+
+
                 <Banner
-                    illustration={illustration}
+                    // illustration={illustration}
                     size={400}
                     title="Classes"
-                    description="A place to show all available classes and manage enrollment."
+                    description="A Place To Show All CLasses "
                 />
-                <Filter
-                    onPromoChange={setPromo}
-                    onFieldChange={setField}
-                    onCoachChange={setCoach}
-                    coaches={["all", ...coaches]}
-                    promos={promos}
-                    Specialty={specialty}
-                ></Filter>
-                <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-                    {data.slice(0, 6).map((e) => {
-                        return (
-                            <Cards
-                                key={e.class}
-                                classNum={e.class}
-                                formation={e.type ? e.type : 'class'}
-                                promo={e.promo ? e.promo : '?'}
-                                coach={e.coach ? e.coach : '?'}
-                                studentsNum={e.student_num ? e.student_num : '?'}
-                            ></Cards>
-                        );
-                    })}
-                </div>
+            <Filter
+                onPromoChange={setPromo}
+                onFieldChange={setField}
+                onCoachChange={setCoach}
+                coaches={["all", ...coaches]}
+                promos={promos}
+                suAdmin={suAdmin}
+                Specialty={specialty}
+            ></Filter>
+            <div className="m-5 grid grid-cols-1 justify-items-center gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+                {data.map((e) => {
+                    return (
+                        <Cards
+                        classNum={e.class}
+                            formation={e.type ? e.type : 'class'}
+                            promo={e.promo ? e.promo : '?'}
+                            coach={e.coach ? e.coach : '?'}
+                            studentsNum={e.student_num ? e.student_num : '?'}
+                        ></Cards>
+                    );
+                })}
             </div>
-        </AppLayout>
+                    </AppLayout>
+
+        </>
     );
 };
 
